@@ -1,0 +1,8 @@
+
+Use this key to access https://aimlapi.com
+
+Name: pikachu
+
+API key: d8773474b83f48b586cb7f21e2de21b0
+
+How to start: https://docs.aimlapi.com/quickstart/setting-up

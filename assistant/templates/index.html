@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pikachu</title>
+</head>
+<style>
+
+body{
+
+    margin: 0;
+
+    padding: 0;
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    background:
+
+    radial-gradient(
+        circle at top,
+        #1e293b,
+        #0f172a 40%,
+        #020617
+    );
+
+    overflow: hidden;
+
+}
+#cmd{
+    
+    
+    width: 300px;
+    height: 40px;
+    font-size: 20px;
+
+}
+button{
+
+    border: none;
+
+    border-radius: 16px;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #06b6d4,
+        #3b82f6
+    );
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    box-shadow:
+    0 4px 20px rgba(59,130,246,0.3);
+
+}
+button:hover{
+
+    transform: translateY(-2px);
+
+    box-shadow:
+    0 8px 25px rgba(59,130,246,0.5);
+
+}
+#loading{
+
+    margin-top: 30px;
+    font-size: 25px;
+    color: cyan;
+
+}
+
+
+/* CHAT CONTAINER */
+
+#chat-container{
+
+    width: 80%;
+
+    margin: 30px auto;
+
+}
+
+
+/* AI MESSAGE */
+
+#response{
+
+    background: #1a1a1a;
+
+    padding: 25px;
+
+    border-radius: 20px;
+
+    line-height: 1.8;
+
+    font-size: 18px;
+
+    box-shadow: 0 0 20px rgba(0,255,255,0.2);
+
+}
+
+
+/* HEADINGS */
+
+#response h1,
+#response h2,
+#response h3{
+
+    color: cyan;
+
+    margin-top: 25px;
+
+}
+
+
+/* PARAGRAPH */
+
+#response p{
+
+    color: #ddd;
+
+}
+
+
+/* CODE BLOCK */
+
+/* CODE BLOCK */
+
+pre{
+
+    background: #0d1117;
+
+    color: #e6edf3;
+
+    padding: 22px;
+
+    border-radius: 18px;
+
+    overflow-x: auto;
+
+    position: relative;
+
+    margin-top: 18px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+    0 0 25px rgba(0,0,0,0.35);
+
+}
+
+
+/* ONLY CODE */
+
+pre code{
+
+    background: transparent !important;
+
+    padding: 0 !important;
+
+    color: #00ffb3;
+
+    font-size: 15px;
+
+    font-family:
+    Consolas,
+    monospace;
+
+    line-height: 1.8;
+
+}
+
+
+/* INLINE CODE */
+
+code{
+
+    background: rgba(255,255,255,0.08);
+
+    padding: 3px 8px;
+
+    border-radius: 6px;
+
+    color: #00ffb3;
+
+}
+
+
+/* COPY BUTTON */
+
+.copy-btn{
+
+    position: absolute;
+
+    top: 12px;
+
+    right: 12px;
+
+    border: none;
+
+    padding: 7px 14px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    color: white;
+
+    font-size: 13px;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #06b6d4,
+        #3b82f6
+    );
+
+    z-index: 100;
+
+}   
+
+
+
+
+
+/* LIST */
+
+#response ul{
+
+    padding-left: 25px;
+
+}
+#response hr{
+
+    border: none;
+
+    border-top: 1px solid #333;
+
+    margin: 25px 0;
+
+}
+
+
+/* BUTTON */
+
+.copy-btn{
+
+    position: absolute;
+
+    top: 12px;
+
+    right: 12px;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #06b6d4,
+        #3b82f6
+    );
+
+    border: none;
+
+    color: white;
+
+    padding: 6px 14px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    transition: 0.3s;
+
+}
+
+
+.copy-btn:hover{
+
+    transform: scale(1.05);
+
+}
+/* APP */
+
+#app{
+
+    display: flex;
+
+    height: 100vh;
+
+}
+
+
+/* SIDEBAR */
+#sidebar{
+
+    width: 260px;
+
+    padding: 20px;
+
+    background: rgba(255,255,255,0.05);
+
+    backdrop-filter: blur(20px);
+
+    border-right: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+
+}
+#sidebar h2{
+
+    color: cyan;
+
+}
+
+#new-chat{
+
+    width: 100%;
+
+    margin-top: 20px;
+
+}
+
+
+/* MAIN */
+
+#main{
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+/* CHAT AREA */
+
+#chat-area{
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+}
+
+
+/* MESSAGE */
+
+.message{
+
+    max-width: 75%;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    border-radius: 20px;
+
+    line-height: 1.8;
+
+    animation: fadeIn 0.3s ease;
+
+}
+
+
+/* USER */
+
+.user{
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #06b6d4
+    );
+
+    margin-left: auto;
+
+    box-shadow:
+    0 8px 25px rgba(37,99,235,0.4);
+
+}
+
+
+/* AI */
+
+.ai{
+
+    background:
+    rgba(255,255,255,0.06);
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:
+    blur(20px);
+
+    box-shadow:
+    0 8px 30px rgba(0,0,0,0.3);
+
+}
+
+
+/* INPUT AREA */
+
+#input-area{
+
+    display: flex;
+
+    padding: 20px;
+
+    margin: 20px;
+
+    border-radius: 25px;
+
+    background: rgba(255,255,255,0.05);
+
+    backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+}
+
+#cmd{
+
+    flex: 1;
+
+    padding: 18px;
+
+    border: none;
+
+    outline: none;
+
+    border-radius: 18px;
+
+    background: rgba(255,255,255,0.06);
+
+    color: white;
+
+    font-size: 18px;
+
+    backdrop-filter: blur(10px);
+
+}
+
+#input-area button{
+
+    margin-left: 10px;
+
+    width: 70px;
+
+}
+
+
+/* ANIMATION */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity: 0;
+        transform: translateY(10px);
+
+    }
+
+    to{
+
+        opacity: 1;
+        transform: translateY(0);
+
+    }
+
+}
+#cmd:disabled{
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+}
+
+</style>
+<body>
+
+<div id="app">
+
+    <!-- SIDEBAR -->
+
+    <div id="sidebar">
+
+        <h2>⚡ Pikachu</h2>
+
+        <button id="new-chat" onclick="newChat()">
+            + New Chat
+        </button>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div id="main">
+
+        <!-- CHAT AREA -->
+
+        <div id="chat-area"></div>
+
+        <!-- INPUT AREA -->
+
+        <div id="input-area">
+
+            <input
+                id="cmd"
+                placeholder="Message Pikachu..."
+            >
+
+            <button onclick="sendCommand()">
+                ➤
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- MARKED JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+
+<script>
+
+async function sendCommand(){
+
+    let cmd =
+    document.getElementById("cmd").value;
+    if(cmd.trim() === "") return;
+    document.getElementById("cmd").value;
+    
+
+   
+
+
+    // DISABLE INPUT
+
+    document.getElementById("cmd").disabled = true;
+
+    let chatArea =
+    document.getElementById("chat-area");
+
+
+    // USER MESSAGE
+
+    chatArea.innerHTML += `
+
+    <div class="message user">
+
+        ${cmd}
+
+    </div>
+
+    `;
+
+
+    // AI THINKING MESSAGE
+
+    chatArea.innerHTML += `
+
+    <div class="message ai">
+
+        🔍 Pikachu is thinking...
+
+    </div>
+
+    `;
+
+
+    // AUTO SCROLL
+
+    chatArea.scrollTop =
+    chatArea.scrollHeight;
+
+
+    try{
+
+        // FETCH RESPONSE
+
+        let response =
+        await fetch(`/command/?command=${encodeURIComponent(cmd)}`);
+
+        let data =
+        await response.json();
+
+
+        // GET LAST AI MESSAGE
+
+        let aiMessages =
+        document.querySelectorAll(".ai");
+
+        let latestAi =
+        aiMessages[aiMessages.length - 1];
+
+
+        // SHOW AI RESPONSE
+
+        // CLEAN RESPONSE
+
+        let cleanResponse =
+        data.response;
+
+
+        // FIX MARKDOWN CODE BLOCKS
+
+        cleanResponse = cleanResponse.replace(
+        /```(\w+)?\n([\s\S]*?)```/g,
+        (match) => match
+        );
+
+
+        // RENDER MARKDOWN
+
+        latestAi.innerHTML =
+        marked.parse(cleanResponse);
+
+        // ENABLE INPUT AGAIN
+
+        document.getElementById("cmd").disabled = false;
+
+        document.getElementById("cmd").focus();
+
+
+        // COPY BUTTONS
+
+       // COPY BUTTONS
+
+          // COPY BUTTONS ONLY FOR CODE BLOCKS
+
+        document.querySelectorAll("pre code").forEach((codeBlock) => {
+
+            let pre =
+            codeBlock.parentElement;
+
+            // prevent duplicate button
+
+            if(pre.querySelector(".copy-btn")) return;
+
+            let button =
+            document.createElement("button");
+
+            button.innerText = "📋 Copy";
+
+            button.className = "copy-btn";
+
+
+            // COPY ONLY CODE
+
+            button.onclick = () => {
+
+                navigator.clipboard.writeText(
+                    codeBlock.innerText
+                );
+
+                button.innerText = "✅ Copied";
+
+                setTimeout(() => {
+
+                    button.innerText = "📋 Copy";
+
+                }, 2000);
+
+            };
+
+
+            // ADD BUTTON INSIDE PRE
+
+            pre.appendChild(button);
+
+        });
+
+                // AUTO SCROLL
+
+                chatArea.scrollTop =
+                chatArea.scrollHeight;
+
+
+            }catch(error){
+
+                console.log(error);
+
+                let aiMessages =
+                document.querySelectorAll(".ai");
+
+                let latestAi =
+                aiMessages[aiMessages.length - 1];
+
+                latestAi.innerHTML =
+
+                "❌ Error getting response";
+
+                document.getElementById("cmd").disabled = false;
+
+                document.getElementById("cmd").focus();
+
+            }
+
+
+            // CLEAR INPUT
+
+            document.getElementById("cmd").value = "";
+
+        }
+
+
+        // ENTER KEY SUPPORT
+
+        document.getElementById("cmd")
+        .addEventListener("keypress", function(e){
+
+            if(e.key === "Enter"){
+
+                sendCommand();
+
+            }
+
+        });
+        // NEW CHAT
+
+        function newChat(){
+
+            let chatArea =
+            document.getElementById("chat-area");
+
+
+            // CLEAR CHAT
+
+            chatArea.innerHTML = "";
+
+
+            // OPTIONAL WELCOME MESSAGE
+
+            chatArea.innerHTML = `
+
+            <div class="message ai">
+
+                👋 Hello! I am Pikachu AI.<br><br>
+
+                How can I help you today?
+
+            </div>
+
+            `;
+
+        }
+
+</script>
+
+</body>
+
+</html>
