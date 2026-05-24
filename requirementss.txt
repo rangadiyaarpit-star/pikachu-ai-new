@@ -1,0 +1,11 @@
+Django==6.0.5
+gunicorn==26.0.0
+requests==2.34.2
+python-dotenv
+Markdown==3.10.2
+SpeechRecognition==3.16.1
+PyPDF2==3.0.1
+gTTS==2.5.4
+pillow==12.2.0
+mss==10.2.0
+pyscreenshot==3.1

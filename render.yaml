@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: pikachu-ai
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn pikachu_web.wsgi:application"
+    envVars:
+      - key: OPENROUTER_API_KEY
+        sync: false
