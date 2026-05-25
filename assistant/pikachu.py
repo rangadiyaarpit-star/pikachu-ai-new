@@ -1,6 +1,6 @@
 from datetime import datetime
-import speech_recognition as sr
-import pyttsx3
+
+
 import subprocess
 import re
 from assistant.brain import detect_intent
@@ -10,7 +10,6 @@ from assistant.ai import ask_ai
 # SPEECH RECOGNITION
 # =========================================
 
-recognizer = sr.Recognizer()
 
 
 
@@ -19,15 +18,7 @@ recognizer = sr.Recognizer()
 # VOICE ENGINE
 # =========================================
 
-engine = pyttsx3.init('sapi5')
 
-voices = engine.getProperty('voices')
-
-engine.setProperty('voice', voices[0].id)
-
-engine.setProperty('rate', 150)
-
-engine.setProperty('volume', 1.0)
 
 # =========================================
 # CLEAN TEXT
@@ -45,81 +36,14 @@ def clean_text(text):
 
 def speak(text):
 
-    try:
-
-        text = clean_text(text)
-
-        print("Pikachu:", text)
-
-        engine = pyttsx3.init()
-
-        voices = engine.getProperty('voices')
-
-        engine.setProperty('voice', voices[0].id)
-
-        engine.setProperty('rate', 170)
-
-        engine.setProperty('volume', 1)
-
-        engine.say(text)
-
-        engine.runAndWait()
-
-        engine.stop()
-
-    except Exception as e:
-
-        print("Speak Error:", e)
-
+    print("Pikachu:", text)
             
             
 # =========================================
 # LISTEN FUNCTION
 # =========================================
 
-def listen():
 
-    try:
-
-        with sr.Microphone(device_index=2) as source:
-
-            print("Listening...")
-
-            recognizer.adjust_for_ambient_noise(source, duration=1)
-
-            audio = recognizer.listen(
-                source,
-                timeout=5,
-                phrase_time_limit=5
-            )
-
-            print("Recognizing...")
-
-            command = recognizer.recognize_google(audio)
-
-            command = command.lower().strip()
-
-            print("You Said:", command)
-
-            return command
-
-    except sr.UnknownValueError:
-
-        speak("I don't understand")
-
-        return ""
-
-    except sr.WaitTimeoutError:
-
-        print("Listening timeout")
-
-        return ""
-
-    except Exception as e:
-
-        print("Error:", e)
-
-        return ""
 
 # =========================================
 # ADB PATH
@@ -143,13 +67,7 @@ def adb(command):
 # =========================================
 # MOBILE COMMANDS
 # =========================================
-def pause_listener():
-
-    stream.stop_stream()
-
-def resume_listener():
-
-    stream.start_stream()   
+   
 def process_command(c):
     c = c.lower().strip()
     intent = detect_intent(c)
